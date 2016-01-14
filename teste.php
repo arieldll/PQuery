@@ -17,7 +17,7 @@
     try {
         $data_module = new DataModule();
         $q1 = new PQuery();
-		$q1->connection = new Connection();
+        $q1->connection = new Connection();
         //$q1->connection = $data_module->conexao;
         
 	/*var_dump($data_module->conexao);
@@ -64,19 +64,27 @@
         $q1 = new PQuery();
         $q1->connection = $conexao;
                 
-        $q1->SQL->Text = "select codigo 
-                          from usuarios
-                          where email = :email
-                          and senha = :senha";
+        $q1->SQL->Text = "select codigo_ibge from cidades limit 1";
        
-        $q1->P("email")->S = "ludviggf@yahoo.com.br";
-        $q1->P("senha")->S = "123";
+        //$q1->P("email")->S = "ludviggf@yahoo.com.br";
+        //$q1->P("senha")->S = "123";
         $q1->Open();
-        if ($q1->F("codigo")->I !== 0) {
+        @session_start();
+        $gravou = SaveMemoryQuery("q1", $q1);
+        echo "gravou....".$gravou;
+       // $_SESSION["oat"] = serialize($q1);
+        
+        
+        if ($q1->F("codigo_ibge") != 0) {
             echo "logou";
         } else {
             echo "nao logou";
         }
+        
+        $aquery = LoadMemoryQuery("q1");
+        //print_r($aquery);
+        //$aquery = unserialize($_SESSION["oat"]);
+        echo "tentando....[".$aquery->record_count."]";
         
         /*$q1->SQL->Text = 'delete from tipo_operacao where codigo = :codigo';
         $q1->P('codigo')->I = 14;

@@ -2,6 +2,6 @@
 Easily PHP Querys into PDO Objects for Delphi like TQuerys
 
 
-Developer Ariel G. Dalla Costa
+Ariel G. Dalla Costa 2016
 arielgdallacosta@gmail.com
-2016
+

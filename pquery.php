@@ -4,7 +4,7 @@
     require_once 'connection.php';
     require_once 'object-sql.php';
 
-    class PQuery extends Connection{
+    class PQuery{
         /*propriedades*/
         /*variaveis*/
         public $connection;    
@@ -205,7 +205,34 @@
             
         }
         
+        public function __sleep(){
+            /*método para serialização*/
+            //incluir todos os atributos da classe PQuery as variáveis aqui
+            return array('SQL', 'record_count', 'EOF', 'indice_result_set', 'rows_affected', 'params', 'fields', 'result_set');
+        }
+            
+        public function __wakeup(){
+            /*método para desserialização*/
+        }
+                        
         
+    }
+    
+    function SaveMemoryQuery($name, $PQuery){
+        if(!($PQuery instanceof PQuery)) throw new Exception("Objeto não é do tipo PQuery!");
+        else{
+            $_SESSION[$name] = serialize($PQuery);
+            return 1;
+        }
+    }
+    
+    function LoadMemoryQuery($name){
+        if(isset($_SESSION[$name])){
+            $objeto = $_SESSION[$name];
+            return unserialize($_SESSION[$name]);
+        }else{
+            throw new Exception("Objeto não encontrado");
+        }
     }
 
     
