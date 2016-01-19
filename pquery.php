@@ -13,6 +13,9 @@
         public $EOF;
         public $indice_result_set = 0;
         public $rows_affected = 0;
+        public $quant_paginador = 20; //quantidade de registros que vai ser exibido por página
+        public $quant_paginas = 0;
+        public $pagina_selecionada = 0;
         
         /*vetores*/
         private $params = array();
@@ -94,12 +97,13 @@
             $this->rows_affected = $stmt->rowCount();
             $erros = "";
             if(!$k){
-                //echo "entrou";
+                echo "Erro! ";
                 foreach($stmt->errorInfo() as $d => $raise){
                     $erros .= $raise.'<br />';
                 }
                 exit($erros);
             }
+            $this->EOF = false;
             $this->record_count = $stmt->rowCount();
             $this->result_set = $stmt->fetchAll(PDO::FETCH_ASSOC);
             $this->indice_result_set = 0;            
@@ -208,14 +212,19 @@
         public function __sleep(){
             /*método para serialização*/
             //incluir todos os atributos da classe PQuery as variáveis aqui
-            return array('SQL', 'record_count', 'EOF', 'indice_result_set', 'rows_affected', 'params', 'fields', 'result_set');
+            return array('SQL', 'record_count', 'EOF', 'indice_result_set', 'rows_affected', 
+                'params', 'fields', 'result_set', 'quant_paginador', 'quant_paginas', 'record_count');
         }
             
         public function __wakeup(){
             /*método para desserialização*/
-        }
+        } 
                         
-        
+        public function paginador(){
+            if($this->record_count > 0){
+                $this->quant_paginas = ceil($this->record_count / $this->quant_paginador);
+            }
+        }
     }
     
     function SaveMemoryQuery($name, $PQuery){
