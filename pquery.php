@@ -1,5 +1,5 @@
 <?php
-    /*PQuery by Ariel G. Dalla Costa - 12-01-2015*/
+    /*PQuery by Ariel G. Dalla Costa - 12-01-2016*/
     require_once 'param-field.php';
     require_once 'connection.php';
     require_once 'object-sql.php';
